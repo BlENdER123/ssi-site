@@ -9,7 +9,7 @@ function LoginDidPage() {
 		<Router>
 			<div className="modal-w modal-did show">
 				<div className="text">Your DID has been created</div>
-				<div className="did">{status[0].DID}</div>
+				{/* <div className="did">{status[0].DID}</div> */}
 
 				<button
 					type="button"

@@ -7,6 +7,7 @@ import {
 	Redirect,
 	useLocation,
 	useHistory,
+	BrowserRouter,
 } from "react-router-dom";
 import {changeTheme, hideTip, showPopup} from "./store/actions/app";
 import {
@@ -111,7 +112,14 @@ import AppPage from "./sdk/AppPage";
 
 import Header from "./sdk/Header";
 
-// import "./sdk/App.css";
+// import {ApolloProvider} from "react-apollo";
+// import ApolloClient from "apollo-boost";
+
+// // import "./sdk/App.css";
+
+// const clientApollo = new ApolloClient({
+// 	uri: "http://ssi.defispace.com:4001/graphql"
+// });
 
 function App() {
 	const {enqueueSnackbar} = useSnackbar();
@@ -295,27 +303,21 @@ function App() {
 	}, []);
 
 	return (
-		<>
-			<Router>
-				<Context.Provider value={{status: status}}>
-					<div className="App">
-						<Header></Header>
-						<Switch>
-							<Route exact path="/" component={ConnectWalletPage}></Route>
-							{/* <Route exact path="/connect-wallet" component={ConnectWalletPage}></Route> */}
-							<Route
-								exact
-								path="/welcome-did"
-								component={WelcomeDidPage}
-							></Route>
-							<Route exact path="/login-did" component={LoginDidPage}></Route>
-							<Route exact path="/login" component={LoginPage}></Route>
-							<Route exact path="/app" component={AppPage}></Route>
-						</Switch>
-					</div>
-				</Context.Provider>
-			</Router>
-		</>
+		<Router>
+			<Context.Provider value={{status: status}}>
+				<div className="App">
+					<Header></Header>
+					<Switch>
+						<Route exact path="/" component={ConnectWalletPage}></Route>
+						{/* <Route exact path="/connect-wallet" component={ConnectWalletPage}></Route> */}
+						<Route exact path="/welcome-did" component={WelcomeDidPage}></Route>
+						<Route exact path="/login-did" component={LoginDidPage}></Route>
+						<Route exact path="/login" component={LoginPage}></Route>
+						<Route exact path="/app" component={AppPage}></Route>
+					</Switch>
+				</div>
+			</Context.Provider>
+		</Router>
 
 		// <>
 		// <button

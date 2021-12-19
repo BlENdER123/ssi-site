@@ -8,15 +8,9 @@ module.exports = {
 					name: "constructor",
 					inputs: [
 						{name: "_rootDEX", type: "address"},
-						{
-							name: "_souintFor",
-							type: "uint256",
-						},
+						{name: "_souintFor", type: "uint256"},
 						{name: "_souintAgainst", type: "uint256"},
-						{
-							name: "_gramsToConnector",
-							type: "uint128",
-						},
+						{name: "_gramsToConnector", type: "uint128"},
 						{name: "_gramsToRoot", type: "uint128"},
 						{name: "_codeConnector", type: "cell"},
 					],
@@ -51,10 +45,7 @@ module.exports = {
 					name: "getClientAddress",
 					inputs: [
 						{name: "_answer_id", type: "uint32"},
-						{
-							name: "clientPubKey",
-							type: "uint256",
-						},
+						{name: "clientPubKey", type: "uint256"},
 						{name: "clientSoArg", type: "uint256"},
 					],
 					outputs: [{name: "value0", type: "address"}],
@@ -71,10 +62,7 @@ module.exports = {
 					name: "createDEXclientCallback",
 					inputs: [
 						{name: "pubkey", type: "uint256"},
-						{
-							name: "deployedAddress",
-							type: "address",
-						},
+						{name: "deployedAddress", type: "address"},
 						{name: "owner", type: "address"},
 					],
 					outputs: [],
@@ -83,20 +71,11 @@ module.exports = {
 					name: "getPairAddress",
 					inputs: [
 						{name: "_answer_id", type: "uint32"},
-						{
-							name: "pairPubKey",
-							type: "uint256",
-						},
+						{name: "pairPubKey", type: "uint256"},
 						{name: "pairSoArg", type: "uint256"},
-						{
-							name: "pairCreator",
-							type: "address",
-						},
+						{name: "pairCreator", type: "address"},
 						{name: "pairRootA", type: "address"},
-						{
-							name: "pairRootB",
-							type: "address",
-						},
+						{name: "pairRootB", type: "address"},
 						{name: "pairRootAB", type: "address"},
 					],
 					outputs: [{name: "value0", type: "address"}],
@@ -105,15 +84,9 @@ module.exports = {
 					name: "getRootTokenAddress",
 					inputs: [
 						{name: "_answer_id", type: "uint32"},
-						{
-							name: "rootPubKey",
-							type: "uint256",
-						},
+						{name: "rootPubKey", type: "uint256"},
 						{name: "rootSoArg", type: "uint256"},
-						{
-							name: "rootName",
-							type: "bytes",
-						},
+						{name: "rootName", type: "bytes"},
 						{name: "rootSymbol", type: "bytes"},
 						{name: "rootDecimals", type: "uint8"},
 					],
@@ -123,10 +96,7 @@ module.exports = {
 					name: "getConnectorAddress",
 					inputs: [
 						{name: "_answer_id", type: "uint32"},
-						{
-							name: "connectorPubKey",
-							type: "uint256",
-						},
+						{name: "connectorPubKey", type: "uint256"},
 						{name: "connectorSoArg", type: "uint256"},
 						{name: "connectorCommander", type: "address"},
 					],
@@ -136,35 +106,17 @@ module.exports = {
 					name: "createDEXpair",
 					inputs: [
 						{name: "root0", type: "address"},
-						{
-							name: "root1",
-							type: "address",
-						},
+						{name: "root1", type: "address"},
 						{name: "pairSoArg", type: "uint256"},
-						{
-							name: "connectorSoArg0",
-							type: "uint256",
-						},
+						{name: "connectorSoArg0", type: "uint256"},
 						{name: "connectorSoArg1", type: "uint256"},
-						{
-							name: "rootSoArg",
-							type: "uint256",
-						},
+						{name: "rootSoArg", type: "uint256"},
 						{name: "rootName", type: "bytes"},
-						{
-							name: "rootSymbol",
-							type: "bytes",
-						},
+						{name: "rootSymbol", type: "bytes"},
 						{name: "rootDecimals", type: "uint8"},
-						{
-							name: "grammsForPair",
-							type: "uint128",
-						},
+						{name: "grammsForPair", type: "uint128"},
 						{name: "grammsForRoot", type: "uint128"},
-						{
-							name: "grammsForConnector",
-							type: "uint128",
-						},
+						{name: "grammsForConnector", type: "uint128"},
 						{name: "grammsForWallet", type: "uint128"},
 					],
 					outputs: [],
@@ -173,10 +125,7 @@ module.exports = {
 					name: "createDEXpairCallback",
 					inputs: [
 						{name: "root0", type: "address"},
-						{
-							name: "root1",
-							type: "address",
-						},
+						{name: "root1", type: "address"},
 						{name: "root01", type: "address"},
 					],
 					outputs: [],
@@ -187,15 +136,9 @@ module.exports = {
 						{
 							components: [
 								{name: "name", type: "bytes"},
-								{
-									name: "symbol",
-									type: "bytes",
-								},
+								{name: "symbol", type: "bytes"},
 								{name: "decimals", type: "uint8"},
-								{
-									name: "root_public_key",
-									type: "uint256",
-								},
+								{name: "root_public_key", type: "uint256"},
 								{name: "root_owner_address", type: "address"},
 								{name: "total_supply", type: "uint128"},
 							],
@@ -248,10 +191,7 @@ module.exports = {
 					outputs: [
 						{name: "arg0", type: "uint8"},
 						{name: "arg1", type: "address"},
-						{
-							name: "arg2",
-							type: "address",
-						},
+						{name: "arg2", type: "address"},
 						{name: "arg3", type: "uint128"},
 						{name: "arg4", type: "uint128"},
 					],
@@ -271,10 +211,7 @@ module.exports = {
 					inputs: [
 						{name: "dest", type: "address"},
 						{name: "value", type: "uint128"},
-						{
-							name: "bounce",
-							type: "bool",
-						},
+						{name: "bounce", type: "bool"},
 						{name: "flags", type: "uint8"},
 						{name: "payload", type: "cell"},
 					],
@@ -289,10 +226,7 @@ module.exports = {
 					name: "createVote",
 					inputs: [
 						{name: "duration", type: "uint256"},
-						{
-							name: "code",
-							type: "cell",
-						},
+						{name: "code", type: "cell"},
 						{name: "pointer", type: "uint8"},
 					],
 					outputs: [{name: "isSuccess", type: "bool"}],
@@ -301,25 +235,13 @@ module.exports = {
 					name: "tokensReceivedCallback",
 					inputs: [
 						{name: "token_wallet", type: "address"},
-						{
-							name: "token_root",
-							type: "address",
-						},
+						{name: "token_root", type: "address"},
 						{name: "amount", type: "uint128"},
-						{
-							name: "sender_public_key",
-							type: "uint256",
-						},
+						{name: "sender_public_key", type: "uint256"},
 						{name: "sender_address", type: "address"},
-						{
-							name: "sender_wallet",
-							type: "address",
-						},
+						{name: "sender_wallet", type: "address"},
 						{name: "original_gas_to", type: "address"},
-						{
-							name: "updated_balance",
-							type: "uint128",
-						},
+						{name: "updated_balance", type: "uint128"},
 						{name: "payload", type: "cell"},
 					],
 					outputs: [],
@@ -329,10 +251,7 @@ module.exports = {
 					inputs: [
 						{name: "yes", type: "uint32"},
 						{name: "no", type: "uint32"},
-						{
-							name: "total",
-							type: "uint32",
-						},
+						{name: "total", type: "uint32"},
 						{name: "selector", type: "uint8"},
 					],
 					outputs: [{name: "value0", type: "bool"}],
@@ -348,15 +267,9 @@ module.exports = {
 						{
 							components: [
 								{name: "name", type: "bytes"},
-								{
-									name: "symbol",
-									type: "bytes",
-								},
+								{name: "symbol", type: "bytes"},
 								{name: "decimals", type: "uint8"},
-								{
-									name: "root_public_key",
-									type: "uint256",
-								},
+								{name: "root_public_key", type: "uint256"},
 								{name: "root_owner_address", type: "address"},
 								{name: "total_supply", type: "uint128"},
 							],
@@ -423,10 +336,7 @@ module.exports = {
 						{
 							components: [
 								{name: "root0", type: "address"},
-								{
-									name: "root1",
-									type: "address",
-								},
+								{name: "root1", type: "address"},
 								{name: "rootLP", type: "address"},
 							],
 							name: "pairs",
@@ -451,10 +361,7 @@ module.exports = {
 						{
 							components: [
 								{name: "pair", type: "address"},
-								{
-									name: "root0",
-									type: "address",
-								},
+								{name: "root0", type: "address"},
 								{name: "root1", type: "address"},
 							],
 							name: "dataForRootAB",
@@ -494,16 +401,10 @@ module.exports = {
 						{
 							components: [
 								{name: "start", type: "uint256"},
-								{
-									name: "duration",
-									type: "uint256",
-								},
+								{name: "duration", type: "uint256"},
 								{name: "code", type: "cell"},
 								{name: "pointer", type: "uint8"},
-								{
-									name: "voteFor",
-									type: "uint128",
-								},
+								{name: "voteFor", type: "uint128"},
 								{name: "voteAgainst", type: "uint128"},
 								{name: "isVotingNow", type: "bool"},
 							],
@@ -524,10 +425,7 @@ module.exports = {
 						{
 							components: [
 								{name: "root_address", type: "address"},
-								{
-									name: "souint",
-									type: "uint256",
-								},
+								{name: "souint", type: "uint256"},
 								{name: "status", type: "bool"},
 							],
 							name: "connectors",

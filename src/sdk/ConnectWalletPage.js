@@ -17,8 +17,8 @@ const {TonClient} = require("@tonclient/core");
 
 TonClient.useBinaryLibrary(libWeb);
 
-//const client = new TonClient({network: {endpoints: ["net.ton.dev"]}});
-const client = new TonClient({network: {endpoints: ["main.ton.dev"]}});
+const client = new TonClient({network: {endpoints: ["net.ton.dev"]}});
+//const client = new TonClient({network: {endpoints: ["main.ton.dev"]}});
 
 //const bip39 = require('bip39');
 const pidCrypt = require("pidcrypt");
@@ -48,9 +48,9 @@ function ConnectWalletPage() {
 	let pass = "";
 	let mnemonic = "";
 
-	//let dexrootAddr = "0:fa31b7395fe161aea6f193cfe1bbfd147faf004f996c624ba52c95f8fe64502f";
 	let dexrootAddr =
-		"0:5d0f5a8cb443e00934d1bb632acadc036a6c41b59308e3a36d809449a5e777d9";
+		"0:fa31b7395fe161aea6f193cfe1bbfd147faf004f996c624ba52c95f8fe64502f";
+	//let dexrootAddr = "0:5d0f5a8cb443e00934d1bb632acadc036a6c41b59308e3a36d809449a5e777d9";
 	const zeroAddress =
 		"0:0000000000000000000000000000000000000000000000000000000000000000";
 
@@ -113,6 +113,7 @@ function ConnectWalletPage() {
 			return value0;
 		} catch (e) {
 			console.log("catch E", e);
+			//console.log(pubkey, n, acc);
 			return e;
 		}
 	}
@@ -354,29 +355,30 @@ function ConnectWalletPage() {
 			console.log(loader);
 		}
 		if (curentPage === 5) {
-			let bal = getClientBalance(addr);
-			setLoader(true);
-			bal.then(
-				(data) => {
-					if (data > 1) {
-						setLoader(false);
-						deployClient(clientData[0], clientData[1]);
-						setCurentPage(curentPage + 1);
-					} else {
-						setLoader(false);
-						setErrorModal([
-							{
-								hidden: true,
-								message: "Insufficient balance to create wallet",
-							},
-						]);
-					}
-				},
-				(error) => {
-					setLoader(false);
-					console.log(error); // вывести ошибку
-				},
-			);
+			setCurentPage(curentPage + 1);
+			// let bal = getClientBalance(addr);
+			// setLoader(true);
+			// bal.then(
+			// 	(data) => {
+			// 		if (data > 1) {
+			// 			setLoader(false);
+			// 			deployClient(clientData[0], clientData[1]);
+			// 			setCurentPage(curentPage + 1);
+			// 		} else {
+			// 			setLoader(false);
+			// 			setErrorModal([
+			// 				{
+			// 					hidden: true,
+			// 					message: "Insufficient balance to create wallet",
+			// 				},
+			// 			]);
+			// 		}
+			// 	},
+			// 	(error) => {
+			// 		setLoader(false);
+			// 		console.log(error); // вывести ошибку
+			// 	},
+			// );
 		}
 		if (curentPage === 6) {
 			setCurentPage(99);
@@ -401,6 +403,7 @@ function ConnectWalletPage() {
 		if (curentPageLogin === 1) {
 			if (seedLogin !== "") {
 				setCurentPageLogin(curentPageLogin + 1);
+				sessionStorage.setItem("seed", seedLogin);
 			} else {
 				setErrorModal([
 					{
@@ -443,6 +446,7 @@ function ConnectWalletPage() {
 										if (acc === 1) {
 											setLoader(false);
 											localStorage.setItem("address", addr);
+
 											setCurentPageLogin(curentPageLogin + 1);
 										} else {
 											setLoader(false);
@@ -616,6 +620,32 @@ function ConnectWalletPage() {
 	// 	setCurentPage(0);
 	// 	setCurentPageLogin(0);
 	// }
+
+	function testdep() {
+		let bal = getClientBalance(addr);
+		setLoader(true);
+		bal.then(
+			(data) => {
+				if (data > 1) {
+					setLoader(false);
+					deployClient(clientData[0], clientData[1]);
+					//setCurentPage(curentPage + 1);
+				} else {
+					setLoader(false);
+					setErrorModal([
+						{
+							hidden: true,
+							message: "Insufficient balance to create wallet",
+						},
+					]);
+				}
+			},
+			(error) => {
+				setLoader(false);
+				console.log(error); // вывести ошибку
+			},
+		);
+	}
 
 	return (
 		<div
@@ -914,12 +944,28 @@ function ConnectWalletPage() {
 					>
 						Copy
 					</button>
+
 					<button
+						className={curentPage !== 5 ? "hide" : "connect-btn"}
+						onClick={testdep}
+					>
+						Deploy
+					</button>
+
+					<button
+						className={curentPage === 6 ? "hide" : "connect-btn"}
+						onClick={NextPage}
+					>
+						Next
+					</button>
+
+					{/* <button
 						className={curentPage !== 5 ? "hide" : "connect-btn"}
 						onClick={NextPage}
 					>
 						Deploy
 					</button>
+					
 					<button
 						className={
 							curentPage === 6 || curentPage === 5 ? "hide" : "connect-btn"
@@ -927,7 +973,8 @@ function ConnectWalletPage() {
 						onClick={NextPage}
 					>
 						Next
-					</button>
+					</button> */}
+
 					<button
 						className={curentPage !== 6 ? "hide" : "connect-btn"}
 						onClick={NextPage}

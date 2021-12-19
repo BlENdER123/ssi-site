@@ -13,7 +13,11 @@ import "./index.scss";
 import "bootstrap";
 import App from "./App";
 
+import {QueryClient, QueryClientProvider} from "react-query";
+
 export const store = createStore(rootReducer, composeWithDevTools());
+
+const queryClient = new QueryClient();
 
 ReactDOM.render(
 	<Provider store={store}>
@@ -31,7 +35,9 @@ ReactDOM.render(
 					)}
 				>
 					{/* <React.StrictMode> */}
-					<App />
+					<QueryClientProvider client={queryClient}>
+						<App />
+					</QueryClientProvider>
 					{/* </React.StrictMode> */}
 				</SnackbarProvider>
 			</StyledEngineProvider>
