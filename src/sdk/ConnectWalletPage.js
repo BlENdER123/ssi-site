@@ -6,14 +6,18 @@ import {Account} from "@tonclient/appkit";
 import {libWeb} from "@tonclient/lib-web";
 
 import {signerKeys} from "@tonclient/core";
-import {DEXClientContract} from "../extensions/contracts/DEXClientMainNet.js";
-import {DEXRootContract} from "../extensions/contracts/DEXRoot.js";
-import {DEXConnectorContract} from "../extensions/contracts/DEXConnector.js";
-import {TONTokenWalletContract} from "../extensions/contracts/TONTokenWallet.js";
-//import {Loader} from "../components/Loader/Loader.js";
+
+//import {DEXClientContract} from "../extensions/contracts/testNet/DEXClientMainNetContract.js";
+// import {DEXRootContract} from "../extensions/contracts/testNet/DEXRootContract.js";
+// import {DEXConnectorContract} from "../extensions/contracts/testNet/DEXConnectorContract.js";
+// import {TONTokenWalletContract} from "../extensions/contracts/testNet/TONTokenWalletContract.js";
+
+import {DEXClientContract} from "../extensions/contracts/mainNet/DEXClient.js";
+import {DEXRootContract} from "../extensions/contracts/mainNet/DEXRoot.js";
+import {DEXConnectorContract} from "../extensions/contracts/mainNet/DEXConnector.js";
+import {TONTokenWalletContract} from "../extensions/contracts/mainNet/TONTokenWallet.js";
 
 const {TonClient} = require("@tonclient/core");
-//const {Account} = require("@tonclient/appkit");
 
 TonClient.useBinaryLibrary(libWeb);
 
@@ -45,11 +49,23 @@ function ConnectWalletPage() {
 	const [inputL3, setInputL3] = useState("");
 	const [inputL4, setInputL4] = useState("");
 
+	const [hasTon] = useState(false);
+
+	function goChromeStore() {
+		console.log(1);
+		window.open(
+			"https://chrome.google.com/webstore/detail/ever-wallet/cgeeodpfagjceefieflmdfphplkenlfk",
+			"_self",
+		);
+	}
+
 	let pass = "";
 	let mnemonic = "";
 
+	// let dexrootAddr =
+	// 	"0:fa31b7395fe161aea6f193cfe1bbfd147faf004f996c624ba52c95f8fe64502f";
 	let dexrootAddr =
-		"0:fa31b7395fe161aea6f193cfe1bbfd147faf004f996c624ba52c95f8fe64502f";
+		"0:b199c648ae3f6d2b1a774d51f35b5af98a346672c91f1da9c1f1ba3a0a3d69d0";
 	//let dexrootAddr = "0:5d0f5a8cb443e00934d1bb632acadc036a6c41b59308e3a36d809449a5e777d9";
 	const zeroAddress =
 		"0:0000000000000000000000000000000000000000000000000000000000000000";
@@ -220,6 +236,8 @@ function ConnectWalletPage() {
 			"connectorCode.codeDEXconnector === DEXConnectorContract.code",
 			connectorCode.codeDEXconnector === DEXConnectorContract.code,
 		);
+
+		console.log(clientSet.data.clientSoArg);
 
 		const clientAcc = new Account(DEXClientContract, {
 			initData: {
@@ -626,10 +644,12 @@ function ConnectWalletPage() {
 		setLoader(true);
 		bal.then(
 			(data) => {
+				//console.log(bal);
 				if (data > 1) {
 					setLoader(false);
+					// сделать проверку на выдаваемый результат deployClient, если произойдет ошибка
 					deployClient(clientData[0], clientData[1]);
-					//setCurentPage(curentPage + 1);
+					setCurentPage(curentPage + 1);
 				} else {
 					setLoader(false);
 					setErrorModal([
@@ -673,6 +693,18 @@ function ConnectWalletPage() {
 					<button className="connect-btn zeropage-btn" onClick={NextPage}>
 						Sign Up
 					</button>
+					{hasTon ? (
+						<button className="connect-btn zeropage-btn">
+							Connect TON Crystal Wallet
+						</button>
+					) : (
+						<button
+							className="connect-btn zeropage-btn"
+							onClick={goChromeStore}
+						>
+							Install TON Crystal Wallet
+						</button>
+					)}
 				</div>
 			</div>
 			<div
@@ -953,7 +985,9 @@ function ConnectWalletPage() {
 					</button>
 
 					<button
-						className={curentPage === 6 ? "hide" : "connect-btn"}
+						className={
+							curentPage === 6 || curentPage === 5 ? "hide" : "connect-btn"
+						}
 						onClick={NextPage}
 					>
 						Next

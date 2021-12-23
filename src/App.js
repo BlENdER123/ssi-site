@@ -19,88 +19,15 @@ import {
 	setTransactionsList,
 	setWallet,
 } from "./store/actions/wallet";
-import {
-	agregateQueryNFTassets,
-	checkClientPairExists,
-	checkPubKey,
-	checkwalletExists,
-	getAllClientWallets,
-	getAllPairsWoithoutProvider,
-	getAssetsForDeploy,
-	getClientBalance,
-	queryRoots,
-	subscribe,
-} from "./extensions/webhook/script";
-import {
-	setSwapAsyncIsWaiting,
-	setSwapFromInputValue,
-	setSwapFromInputValueChange,
-	setSwapFromToken,
-	setSwapToInputValue,
-	setSwapToToken,
-} from "./store/actions/swap";
-import {
-	setPoolAsyncIsWaiting,
-	setPoolFromInputValue,
-	setPoolFromToken,
-	setPoolToInputValue,
-	setPoolToToken,
-} from "./store/actions/pool";
-import {
-	setManageAsyncIsWaiting,
-	setManageBalance,
-	setManageFromToken,
-	setManagePairId,
-	setManageRateAB,
-	setManageRateBA,
-	setManageToToken,
-} from "./store/actions/manage";
-import Account from "./pages/Account/Account";
-import Swap from "./pages/Swap/Swap";
-import Pool from "./pages/Pool/Pool";
-import Popup from "./components/Popup/Popup";
-// import Header from "./components/Header/Header";
-import Manage from "./pages/Manage/Manage";
-import AddLiquidity from "./pages/AddLiquidity/AddLiquidity";
-import PoolExplorer from "./components/PoolExplorer/PoolExplorer";
-import NativeLogin from "./components/NativeLogin/NativeLogin";
-import Assets from "./pages/Assets/Assets";
-import SendAssets from "./components/SendAssets/SendAssets";
-import ReceiveAssets from "./components/ReceiveAssets/ReceiveAssets";
-import AssetsModal from "./components/SendAssets/AssetsModal";
-import AssetsModalReceive from "./components/ReceiveAssets/AssetsModalReceive";
+
 import {useMount} from "react-use";
 import {
 	enterSeedPhraseEmptyStorage,
 	setEncryptedSeedPhrase,
 	showEnterSeedPhraseUnlock,
 } from "./store/actions/enterSeedPhrase";
-import EnterPassword from "./components/EnterPassword/EnterPassword";
-import WalletSettings from "./components/WalletSettings/WalletSettings";
-import KeysBlock from "./components/WalletSettings/KeysBlock";
-import Stacking from "./pages/Stacking/Stacking";
-import RevealSeedPhrase from "./components/RevealSeedPhrase/RevealSeedPhrase";
-import {setNFTassets} from "./store/actions/walletSeed";
 
-import AssetsListForDeploy from "./components/AssetsListForDeploy/AssetsListForDeploy";
 import {useSnackbar} from "notistack";
-import {
-	getAllPairsAndSetToStore,
-	getAllTokensAndSetToStore,
-} from "./reactUtils/reactUtils";
-import LimitOrder from "./pages/LimitOrder/LimitOrder";
-import useFetchLimitOrders from "./hooks/useFetchLimitOrders";
-import useSubLimitOrders from "./hooks/useSubLimitOrders";
-import CreatePair from "./pages/CreatePair/CreatePair";
-
-import {
-	showEnterSeedPhrase,
-	showEnterSeedPhraseRegister,
-} from "./store/actions/enterSeedPhrase";
-
-import EnterSeedPhrase from "./components/EnterSeedPhrase/EnterSeedPhrase";
-
-import EnterSeed from "./sdk";
 
 import Context from "./sdk/Context";
 
@@ -111,15 +38,6 @@ import LoginPage from "./sdk/LoginPage";
 import AppPage from "./sdk/AppPage";
 
 import Header from "./sdk/Header";
-
-// import {ApolloProvider} from "react-apollo";
-// import ApolloClient from "apollo-boost";
-
-// // import "./sdk/App.css";
-
-// const clientApollo = new ApolloClient({
-// 	uri: "http://ssi.defispace.com:4001/graphql"
-// });
 
 function App() {
 	const {enqueueSnackbar} = useSnackbar();
@@ -171,18 +89,6 @@ function App() {
 		(state) => state.enterSeedPhrase.enterSeedPhraseIsVisible,
 	);
 
-	useFetchLimitOrders();
-	useSubLimitOrders();
-
-	/*
-        get pairs from dexroot
-    */
-	useEffect(async () => {
-		const pairs2 = await getAllPairsWoithoutProvider();
-		dispatch(setPairsList(pairs2));
-		setonloading(false);
-	}, []);
-
 	useEffect(async () => {
 		setonloading(true);
 		const theme =
@@ -193,8 +99,6 @@ function App() {
 		setonloading(false);
 		console.log("setonloading", onloading);
 	}, []);
-
-	// const transListReceiveTokens = useSelector(state => state.walletReducer.transListReceiveTokens);
 
 	useEffect(() => {
 		window.addEventListener("beforeunload", function (e) {
@@ -207,8 +111,6 @@ function App() {
 		let esp = localStorage.getItem("esp");
 		if (esp === null) dispatch(enterSeedPhraseEmptyStorage(true));
 		else if (typeof esp === "string") {
-			// const receiveTokensData = JSON.parse(localStorage.getItem("setSubscribeReceiveTokens"))
-			// dispatch(setSubscribeReceiveTokens(receiveTokensData))
 			dispatch(enterSeedPhraseEmptyStorage(false));
 			dispatch(setEncryptedSeedPhrase(esp));
 			dispatch(showEnterSeedPhraseUnlock());
@@ -226,17 +128,7 @@ function App() {
 	);
 
 	const clientData = useSelector((state) => state.walletReducer.clientData);
-	useEffect(async () => {
-		console.log("clientData", clientData);
-		const NFTassets = await agregateQueryNFTassets(clientData.address);
-		// setAssets(NFTassets)
-		dispatch(setNFTassets(NFTassets));
-	}, [clientData.address]);
 
-	// const tipOpened = useSelector(state => state.appReducer.tipOpened);
-	// const tipSeverity = useSelector(state => state.appReducer.tipSeverity);
-	// const tipDuration = useSelector(state => state.appReducer.tipDuration);
-	// const tipMessage = useSelector(state => state.appReducer.tipMessage);
 	const tips = useSelector((state) => state.appReducer.tips);
 	const transListReceiveTokens = useSelector(
 		(state) => state.walletReducer.transListReceiveTokens,
@@ -256,35 +148,7 @@ function App() {
 
 		const newTransList = JSON.parse(JSON.stringify(transListReceiveTokens));
 		console.log("newTransList", newTransList);
-		if (
-			tips.name === "deployLockStakeSafeCallback" ||
-			"transferOwnershipCallback"
-		) {
-			const NFTassets = await agregateQueryNFTassets(clientData.address);
-			dispatch(setNFTassets(NFTassets));
-		}
-		if (tips.name === "connectRoot") {
-			await getAllPairsAndSetToStore(clientData.address);
-			await getAllTokensAndSetToStore(clientData.address);
-		}
-		if (tips.name === "acceptedPairTokens") {
-			console.log("i at acceptedPairTokens");
-			setTimeout(
-				async () => await getAllTokensAndSetToStore(clientData.address),
-				10000,
-			);
-		}
 
-		if (
-			tips.name === "tokensReceivedCallback" ||
-			tips.name === "processLiquidityCallback" ||
-			tips.name === "sendTokens" ||
-			tips.name === "connectRoot" ||
-			tips.name === "UpdateBalanceTONs"
-		) {
-			console.log("i was here", tips);
-			await getAllTokensAndSetToStore(clientData.address);
-		}
 		enqueueSnackbar({type: tips.type, message: tips.message});
 		newTransList.push(tips);
 		dispatch(setSubscribeReceiveTokens(newTransList));
@@ -293,14 +157,6 @@ function App() {
 	function onTipClosed() {
 		dispatch(hideTip());
 	}
-
-	useEffect(async () => {
-		// setLoadingRoots(true)
-		const addrArray = await getAssetsForDeploy();
-		// console.log("addrArray", addrArray);
-		dispatch(setAssetsFromGraphQL(addrArray));
-		// setLoadingRoots(true)
-	}, []);
 
 	return (
 		<Router>

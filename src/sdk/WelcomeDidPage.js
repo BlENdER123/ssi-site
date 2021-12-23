@@ -6,7 +6,7 @@ import {Account} from "@tonclient/appkit";
 import {libWeb} from "@tonclient/lib-web";
 import {signerKeys, TonClient, signerNone} from "@tonclient/core";
 import {DidStorageContract} from "./contracts/DidStorageContract.js";
-import {DEXClientContract} from "../extensions/contracts/DEXClientMainNet.js";
+import {DEXClientContract} from "../extensions/contracts/testNet/DEXClientMainNet.js";
 import {DidDocumentContract} from "./contracts/DidDocumentContract.js";
 
 import {useQuery} from "react-query";
@@ -31,6 +31,18 @@ const request = () =>
 		body: JSON.stringify({
 			query:
 				'mutation loginGenerate{loginGenerate(did:"978cae5ccb0048de4bf6c76ffba5c2686987fd72494137de8373a84e5f720063")}',
+		}),
+	}).then((response) => response.json());
+
+const request2 = (hex) =>
+	fetch("http://ssi.defispace.com:4001/graphql", {
+		method: "POST",
+		headers: {"Content-Type": "application/json; charset=utf-8"},
+		body: JSON.stringify({
+			query:
+				'mutation LoginVerify{loginVerify(did:"978cae5ccb0048de4bf6c76ffba5c2686987fd72494137de8373a84e5f7200rt",signatureHex:"' +
+				hex +
+				'")}',
 		}),
 	}).then((response) => response.json());
 
@@ -165,8 +177,17 @@ function WelcomeDidPage() {
 	}
 
 	let res = request();
+
+	let generateResult;
 	res.then((response) => {
 		console.log(response);
+		generateResult = response.data.loginGenerate;
+
+		let res2 = request2(generateResult);
+
+		res2.then((response2) => {
+			console.log(response2);
+		});
 	});
 
 	return (
