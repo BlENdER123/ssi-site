@@ -17,6 +17,8 @@ import {DEXRootContract} from "../extensions/contracts/mainNet/DEXRoot.js";
 import {DEXConnectorContract} from "../extensions/contracts/mainNet/DEXConnector.js";
 import {TONTokenWalletContract} from "../extensions/contracts/mainNet/TONTokenWallet.js";
 
+import {Address, ProviderRpcClient, TvmException} from "ton-inpage-provider";
+
 const {TonClient} = require("@tonclient/core");
 
 TonClient.useBinaryLibrary(libWeb);
@@ -27,6 +29,8 @@ const client = new TonClient({network: {endpoints: ["net.ton.dev"]}});
 //const bip39 = require('bip39');
 const pidCrypt = require("pidcrypt");
 require("pidcrypt/aes_cbc");
+
+const ton = new ProviderRpcClient();
 
 function ConnectWalletPage() {
 	const [curentPage, setCurentPage] = useState(0);
@@ -51,13 +55,13 @@ function ConnectWalletPage() {
 
 	const [hasTon] = useState(false);
 
-	function goChromeStore() {
-		console.log(1);
-		window.open(
-			"https://chrome.google.com/webstore/detail/ever-wallet/cgeeodpfagjceefieflmdfphplkenlfk",
-			"_self",
-		);
-	}
+	// function goChromeStore() {
+	// 	console.log(1);
+	// 	window.open(
+	// 		"https://chrome.google.com/webstore/detail/ever-wallet/cgeeodpfagjceefieflmdfphplkenlfk",
+	// 		"_self",
+	// 	);
+	// }
 
 	let pass = "";
 	let mnemonic = "";
@@ -667,6 +671,29 @@ function ConnectWalletPage() {
 		);
 	}
 
+	async function connectWallet() {
+		if (!(await ton.hasProvider())) {
+			console.log("Extension is not installed");
+			window.open(
+				"https://chrome.google.com/webstore/detail/ever-wallet/cgeeodpfagjceefieflmdfphplkenlfk",
+				"_self",
+			);
+		}
+		await ton.ensureInitialized();
+
+		const {accountInteraction} = await ton.requestPermissions({
+			permissions: ["tonClient", "accountInteraction"],
+		});
+
+		console.log(accountInteraction);
+		if (accountInteraction == null) {
+			console.log("Insufficient permissions");
+		}
+
+		const selectedAddress = accountInteraction.address;
+		console.log(selectedAddress);
+	}
+
 	return (
 		<div
 			className={
@@ -693,18 +720,10 @@ function ConnectWalletPage() {
 					<button className="connect-btn zeropage-btn" onClick={NextPage}>
 						Sign Up
 					</button>
-					{hasTon ? (
-						<button className="connect-btn zeropage-btn">
-							Connect TON Crystal Wallet
-						</button>
-					) : (
-						<button
-							className="connect-btn zeropage-btn"
-							onClick={goChromeStore}
-						>
-							Install TON Crystal Wallet
-						</button>
-					)}
+
+					<button className="connect-btn zeropage-btn" onClick={connectWallet}>
+						Connect TON Crystal Wallet
+					</button>
 				</div>
 			</div>
 			<div
